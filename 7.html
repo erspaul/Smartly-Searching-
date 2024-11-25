@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take your House🏡-Snehashish Paul </title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+
+        .left-panel {
+            width: 20%;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+            color: #fff;
+        }
+
+        .right-panel {
+            width: 80%;
+            padding: 30px;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h3 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            outline: none;
+            background-color: #fff;
+            color: #333;
+            transition: 0.3s;
+        }
+
+        select:hover, select:focus {
+            border-color: #8f94fb;
+        }
+
+        .action-buttons {
+            margin-top: 20px;
+        }
+
+        .action-buttons button {
+            padding: 12px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            background-color: #4e54c8;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .action-buttons button:hover {
+            background-color: #8f94fb;
+        }
+
+        .iframe-container {
+            width: 100%;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .left-panel {
+                width: 100%;
+                text-align: center;
+            }
+            .right-panel {
+                width: 100%;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Left panel for dropdown selection -->
+    <div class="left-panel">
+        <h3>Select Location</h3>
+        <select id="country">
+            <option value="">Select Country</option>
+            <option value="Bangladesh">Bangladesh</option>
+            <option value="India">India</option>
+        </select>
+        <select id="division" disabled>
+            <option value="">Select Division</option>
+        </select>
+        <select id="district" disabled>
+            <option value="">Select District</option>
+        </select>
+        <select id="subdistrict" disabled>
+            <option value="">Select Sub-District</option>
+        </select>
+    </div>
+
+    <!-- Right panel for displaying options and HTML content -->
+    <div class="right-panel">
+	 <h4>We sincerely apologize, but at the moment, we are focusing exclusively on the Chandigarh University area. The good news is that we’ll be expanding to other locations very soon! Thank you for your patience and support—exciting things are on the way!.</h4>
+	<h3> This website is made by</h3><h1><a href="https://erpaul.online/">Snehashish Paul</a></h1>
+
+        <h3>Property Listings</h3>
+
+        <!-- Rent or Buy Options -->
+        <div id="main-options" class="action-buttons" style="display: none;">
+            <button id="rent-btn">Rent</button>
+            <button id="buy-btn">Buy</button>
+        </div>
+
+        <!-- Rent Sub-options -->
+        <div id="rent-options" class="action-buttons" style="display: none;">
+            <button id="family-house-btn">Family House</button>
+            <button id="sublet-btn">Sublet</button>
+        </div>
+
+        <!-- HTML file display area -->
+        <div class="iframe-container" id="iframe-container">
+            <iframe id="content-frame" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Sample Data for cascading dropdowns
+        const data = {
+            "Bangladesh": {
+                "Barishal": {
+                    "Barguna": ["Sadar", "Other"],
+                    "Barishal Sadar": ["Sadar", "Other"],
+                    "Bhola": ["Sadar", "Other"],
+                    "Jhalokathi": ["Sadar", "Other"],
+                    "Patuakhali": ["Sadar", "Other"],
+                    "Pirojpur": ["Sadar", "Other"]
+
+                },
+		"Chattogram": {
+                    "Bandarban": ["Sadar", "Other"],
+                    "Brahmanbaria": ["Sadar", "Other"],
+                    "Chandpur": ["Sadar", "Other"],
+                    "Chattogram": ["Sadar", "Other"],
+                    "Cox's Bazar": ["Sadar", "Other"],
+                    "Cumilla": ["Sadar", "Other"],
+                    "Feni": ["Sadar", "Other"],
+                    "Khagrachari": ["Sadar", "Other"],
+                    "Lakshmipur": ["Sadar", "Other"],
+                    "Noakhali": ["Sadar", "Other"],
+                    "Rangamati": ["Sadar", "Other"]
+                },
+		"Dhaka": {
+                    "Dhaka": ["Sadar", "Other"],
+                    "Faridpur": ["Sadar", "Other"],
+                    "Gazipur": ["Sadar", "Other"],
+                    "Gopalganj": ["Sadar", "Other"],
+                    "Kishoreganj": ["Sadar", "Bajitpur", "Other"],
+                    "Madaripur": ["Sadar", "Other"],
+                    "Manikganj": ["Sadar", "Other"],
+                    "Munshiganj": ["Sadar", "Other"],
+                    "Narayanganj": ["Sadar", "Other"],
+                    "Narsingdi": ["Sadar", "Other"],
+                    "Rajbari": ["Sadar", "Other"],
+                    "Shariatpur": ["Sadar", "Other"],
+                    "Tangail": ["Sadar", "Other"]
+                },
+                "Khulna": {
+                    "Bagerhat": ["Sadar", "Other"],
+                    "Chuadanga": ["Sadar", "Other"],
+                    "Jashore": ["Sadar", "Other"],
+                    "Jhenaidah": ["Sadar", "Other"],
+                    "Khulna": ["Sadar", "Other"],
+                    "Kushtia": ["Sadar", "Other"],
+                    "Magura": ["Sadar", "Other"],
+                    "Meherpur": ["Sadar", "Other"],
+                    "Narail": ["Sadar", "Other"],
+                    "Satkhira": ["Sadar", "Other"]
+                },
+                "Mymensingh": {
+                    "Jamalpur": ["Sadar", "Other"],
+                    "Mymensingh": ["Sadar", "Other"],
+                    "Netrokona": ["Sadar", "Other"],
+                    "Sherpur": ["Sadar", "Other"]
+                },
+                "Rajshahi": {
+                    "Bogura": ["Sadar", "Other"],
+                    "Chapainawabganj": ["Sadar", "Other"],
+                    "Joypurhat": ["Sadar", "Other"],
+                    "Naogaon": ["Sadar", "Other"],
+                    "Natore": ["Sadar", "Other"],
+                    "Pabna": ["Sadar", "Other"],
+                    "Rajshahi": ["Sadar", "Other"],
+                    "Sirajganj": ["Sadar", "Other"]
+                },
+                "Rangpur": {
+                    "Dinajpur": ["Sadar", "Other"],
+                    "Gaibandha": ["Sadar", "Other"],
+                    "Kurigram": ["Sadar", "Other"],
+                    "Lalmonirhat": ["Sadar", "Other"],
+                    "Nilphamari": ["Sadar", "Other"],
+                    "Panchagarh": ["Sadar", "Other"],
+                    "Rangpur": ["Sadar", "Other"],
+                    "Thakurgaon": ["Sadar", "Other"]
+                },
+                "Sylhet": {
+                    "Habiganj": ["Sadar", "Other"],
+                    "Moulvibazar": ["Sadar", "Other"],
+                    "Sunamganj": ["Sadar", "Other"],
+                    "Sylhet": ["Sadar", "Other"]
+
+                }
+
+            },
+            "India": {
+                "Punjab/Chandigarh": {
+                    "Mohali": ["Khara", "Gharuan", "Mamupur"]
+                }
+            }
+        };
+
+// Sample listings for each subdistrict
+const listings = {
+    "Bangladesh": {
+        "Barishal": {
+            "Barguna": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Barishal Sadar": {
+                "Sadar": {
+                    "Family House": "barishal_sadar_family_house.html",
+                    "Sublet": "barishal_sadar_sublet.html",
+                    "Buy": "barishal_sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "barishal_other_family_house.html",
+                    "Sublet": "barishal_other_sublet.html",
+                    "Buy": "barishal_other_buy.html"
+                }
+            },
+            "Bhola": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Jhalokathi": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Patuakhali": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Pirojpur": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "1.html"
+                },
+                "Other": {
+                    "Family House": "2.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "1.html"
+                }
+            }
+        },
+        "Chattogram": {
+            "Bandarban": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Brahmanbaria": {
+                "Sadar": {
+                    "Family House": "barishal_sadar_family_house.html",
+                    "Sublet": "barishal_sadar_sublet.html",
+                    "Buy": "barishal_sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "barishal_other_family_house.html",
+                    "Sublet": "barishal_other_sublet.html",
+                    "Buy": "barishal_other_buy.html"
+                }
+            },
+            "Chandpur": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Chattogram": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Cox's Bazar": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		      "Cumilla": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		      "Feni": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		      "Khagrachari": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		 "Lakshmipur": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+
+		"Noakhali": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+
+            "Rangamati": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "1.html"
+                },
+                "Other": {
+                    "Family House": "2.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "1.html"
+                }
+            }
+        },
+	        "Dhaka": {
+            "Dhaka": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Faridpur": {
+                "Sadar": {
+                    "Family House": "barishal_sadar_family_house.html",
+                    "Sublet": "barishal_sadar_sublet.html",
+                    "Buy": "barishal_sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "barishal_other_family_house.html",
+                    "Sublet": "barishal_other_sublet.html",
+                    "Buy": "barishal_other_buy.html"
+                }
+            },
+            "Gazipur": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Gopalganj": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Kishoreganj": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+		"Bajitpur": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		      "Madaripur": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		      "Manikganj": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		      "Munshiganj": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		 "Narayanganj": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+
+		"Narsingdi": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		"Rajbari": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		"Shariatpur": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+
+
+            "Tangail": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "1.html"
+                },
+                "Other": {
+                    "Family House": "2.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "1.html"
+                }
+            }
+        },
+	 "Khulna": {
+            "Bagerhat": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Chuadanga": {
+                "Sadar": {
+                    "Family House": "barishal_sadar_family_house.html",
+                    "Sublet": "barishal_sadar_sublet.html",
+                    "Buy": "barishal_sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "barishal_other_family_house.html",
+                    "Sublet": "barishal_other_sublet.html",
+                    "Buy": "barishal_other_buy.html"
+                }
+            },
+            "Jashore": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Jhenaidah": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Khulna": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		      "Kushtia": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		      "Magura": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		      "Meherpur": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		 "Narail": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		
+            "Satkhira": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "1.html"
+                },
+                "Other": {
+                    "Family House": "2.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "1.html"
+                }
+            }
+        },
+		 "Mymensingh": {
+            "Jamalpur": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Mymensingh": {
+                "Sadar": {
+                    "Family House": "barishal_sadar_family_house.html",
+                    "Sublet": "barishal_sadar_sublet.html",
+                    "Buy": "barishal_sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "barishal_other_family_house.html",
+                    "Sublet": "barishal_other_sublet.html",
+                    "Buy": "barishal_other_buy.html"
+                }
+            },
+            "Netrokona": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },		
+            "Sherpur": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "1.html"
+                },
+                "Other": {
+                    "Family House": "2.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "1.html"
+                }
+            }
+        },
+	"Rajshahi": {
+            "Bogura": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Chapainawabganj": {
+                "Sadar": {
+                    "Family House": "barishal_sadar_family_house.html",
+                    "Sublet": "barishal_sadar_sublet.html",
+                    "Buy": "barishal_sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "barishal_other_family_house.html",
+                    "Sublet": "barishal_other_sublet.html",
+                    "Buy": "barishal_other_buy.html"
+                }
+            },
+            "Joypurhat": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Naogaon": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Natore": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		      "Pabna": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		
+		 "Rajshahi": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		
+            "Sirajganj": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "1.html"
+                },
+                "Other": {
+                    "Family House": "2.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "1.html"
+                }
+            }
+        },
+	"Rangpur": {
+            "Dinajpur": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Gaibandha": {
+                "Sadar": {
+                    "Family House": "barishal_sadar_family_house.html",
+                    "Sublet": "barishal_sadar_sublet.html",
+                    "Buy": "barishal_sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "barishal_other_family_house.html",
+                    "Sublet": "barishal_other_sublet.html",
+                    "Buy": "barishal_other_buy.html"
+                }
+            },
+            "Kurigram": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Lalmonirhat": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Nilphamari": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		      "Panchagarh": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		
+		 "Rangpur": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+		
+            "Thakurgaon": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "1.html"
+                },
+                "Other": {
+                    "Family House": "2.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "1.html"
+                }
+            }
+        },
+	"Sylhet": {
+            "Habiganj": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },
+            "Moulvibazar": {
+                "Sadar": {
+                    "Family House": "barishal_sadar_family_house.html",
+                    "Sublet": "barishal_sadar_sublet.html",
+                    "Buy": "barishal_sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "barishal_other_family_house.html",
+                    "Sublet": "barishal_other_sublet.html",
+                    "Buy": "barishal_other_buy.html"
+                }
+            },
+            "Sunamganj": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "sadar_buy.html"
+                },
+                "Other": {
+                    "Family House": "other_family_house.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "other_buy.html"
+                }
+            },		
+            "Sylhet": {
+                "Sadar": {
+                    "Family House": "sadar_family_house.html",
+                    "Sublet": "sadar_sublet.html",
+                    "Buy": "1.html"
+                },
+                "Other": {
+                    "Family House": "2.html",
+                    "Sublet": "other_sublet.html",
+                    "Buy": "1.html"
+                }
+            }
+        }
+    },
+    "India": {
+        "Punjab/Chandigarh": {
+            "Mohali": {
+                "Khara": {
+                    "Family House": "khara_family_house.html",
+                    "Sublet": "khara_sublet.html",
+                    "Buy": "khara_buy.html"
+                },
+                "Gharuan": {
+                    "Family House": "gharuan_family_house.html",
+                    "Sublet": "gharuan_sublet.html",
+                    "Buy": "gharuan_buy.html"
+                },
+                "Mamupur": {
+                    "Family House": "mamupur_family_house.html",
+                    "Sublet": "mamupur_sublet.html",
+                    "Buy": "mamupur_buy.html"
+                }
+            }
+        }
+    }
+};
+
+
+        const countrySelect = document.getElementById('country');
+        const divisionSelect = document.getElementById('division');
+        const districtSelect = document.getElementById('district');
+        const subdistrictSelect = document.getElementById('subdistrict');
+        const mainOptions = document.getElementById('main-options');
+        const rentOptions = document.getElementById('rent-options');
+        const iframeContainer = document.getElementById('iframe-container');
+        const contentFrame = document.getElementById('content-frame');
+
+        // Event Listener for Country
+        countrySelect.addEventListener('change', function() {
+            const country = this.value;
+            divisionSelect.innerHTML = '<option value="">Select Division</option>';
+            districtSelect.innerHTML = '<option value="">Select District</option>';
+            subdistrictSelect.innerHTML = '<option value="">Select Sub-District</option>';
+            iframeContainer.style.display = 'none'; // Hide iframe
+
+            if (country) {
+                divisionSelect.disabled = false;
+                for (const division in data[country]) {
+                    const option = document.createElement('option');
+                    option.value = division;
+                    option.textContent = division;
+                    divisionSelect.appendChild(option);
+                }
+            } else {
+                divisionSelect.disabled = true;
+                districtSelect.disabled = true;
+                subdistrictSelect.disabled = true;
+            }
+        });
+
+        // Event Listener for Division
+        divisionSelect.addEventListener('change', function() {
+            const country = countrySelect.value;
+            const division = this.value;
+            districtSelect.innerHTML = '<option value="">Select District</option>';
+            subdistrictSelect.innerHTML = '<option value="">Select Sub-District</option>';
+            iframeContainer.style.display = 'none'; // Hide iframe
+
+            if (division) {
+                districtSelect.disabled = false;
+                for (const district in data[country][division]) {
+                    const option = document.createElement('option');
+                    option.value = district;
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                }
+            } else {
+                districtSelect.disabled = true;
+                subdistrictSelect.disabled = true;
+            }
+        });
+
+        // Event Listener for District
+        districtSelect.addEventListener('change', function() {
+            const country = countrySelect.value;
+            const division = divisionSelect.value;
+            const district = this.value;
+            subdistrictSelect.innerHTML = '<option value="">Select Sub-District</option>';
+            iframeContainer.style.display = 'none'; // Hide iframe
+
+            if (district) {
+                subdistrictSelect.disabled = false;
+                data[country][division][district].forEach(function(subdistrict) {
+                    const option = document.createElement('option');
+                    option.value = subdistrict;
+                    option.textContent = subdistrict;
+                    subdistrictSelect.appendChild(option);
+                });
+            } else {
+                subdistrictSelect.disabled = true;
+            }
+        });
+
+        // Event Listener for Sub-District
+        subdistrictSelect.addEventListener('change', function() {
+            const subdistrict = this.value;
+            if (subdistrict) {
+                mainOptions.style.display = 'block';
+            } else {
+                mainOptions.style.display = 'none';
+            }
+            iframeContainer.style.display = 'none'; // Hide iframe
+        });
+
+        // Event Listener for Rent Button
+        document.getElementById('rent-btn').addEventListener('click', function() {
+            rentOptions.style.display = 'block';
+        });
+
+        // Event Listener for Buy Button
+        document.getElementById('buy-btn').addEventListener('click', function() {
+            displayListing('Buy');
+        });
+
+        // Event Listener for Family House button under Rent
+        document.getElementById('family-house-btn').addEventListener('click', function() {
+            displayListing('Family House');
+        });
+
+        // Event Listener for Sublet button under Rent
+        document.getElementById('sublet-btn').addEventListener('click', function() {
+            displayListing('Sublet');
+        });
+
+        // Function to display listing based on subdistrict and selection
+        function displayListing(type) {
+            const country = countrySelect.value;
+            const division = divisionSelect.value;
+            const district = districtSelect.value;
+            const subdistrict = subdistrictSelect.value;
+
+            const selectedListing = listings?.[country]?.[division]?.[district]?.[subdistrict]?.[type];
+            if (selectedListing) {
+                contentFrame.src = selectedListing;
+                iframeContainer.style.display = 'block'; // Show iframe
+            } else {
+                alert('Listing not available.');
+                iframeContainer.style.display = 'none'; // Hide iframe
+            }
+        }
+    </script>
+
+</body>
+</html>
